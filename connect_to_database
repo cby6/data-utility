@@ -51,6 +51,7 @@ public class ConnectMSSQLServer {
 	  
 
 3. use .NET(C#) to connect to database:
+
 Web.config file:
 <connectionStrings>
   <!--SQL SERVER-->
@@ -59,3 +60,28 @@ Web.config file:
   <add name="AccessConnStr" providerName="System.Data.OleDb" connectionString="Provider=Microsoft.ACE.OLEDB.12.0; Data Source=XXX-location-of-Access-database-XXX"/>
 </connectionStrings>
 
+Server Controll file:
+using System.Configuration;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SQLConnStr"].ToString()))
+{
+  string SQLstring = "SELECT * FROM tables";
+  SqlCommand command = new SqlCommand(SQLstring, connection);
+  SqlDataReader dr = null;
+  dr = command.ExecuteReader();
+  dr.Read();
+  dr.Close();
+}
+
+
+4. Javascript use ADO to connect to database:
+
+var connection = new ActiveXObject("ADODB.Connection") ;
+var connectionstring="Data Source=XXX-ServerName-XXX; Initial Catalog=XXX-DataBaseName-XXX; User ID=XXXXX; Password=XXXXXX; Provider=SQLOLEDB";
+connection.Open(connectionstring);
+var rs = new ActiveXObject("ADODB.Recordset");
+sqlString = "SELECT * FROM TABLES";
+rs.Open(sqlString, connection);	
+rs.close;
+connection.close;
