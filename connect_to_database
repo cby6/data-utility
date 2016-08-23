@@ -1,0 +1,61 @@
+1.VBA use ADO to connect to database:
+
+Dim Conn As ADODB.Connection
+Dim rs As ADODB.Recordset
+Set Conn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+Dim sConnString, sqlString As String
+'SQL SERVER:
+sConnString = "Provider=SQLOLEDB; Data Source=XXXXXX; Initial Catalog=XXXXXX; User ID=XXXXXXX; Password=XXXXXXX;"
+'Access:
+sConnString = "Provider=Microsoft.ACE.OLEDB.12.0; Data Source=XXX-location-of-Access-database-XXX;"
+Conn.Open sConnString
+Set rs = Conn.Execute(sqlString)
+............
+............
+rs.Close
+Conn.Close
+Set Conn = Nothing
+Set rs = Nothing
+
+
+2.Java use JDBC to connect to database:
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+public class ConnectMSSQLServer {
+  public void dbConnect(String db_connect_string, String db_userid, String db_password)
+	{
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			Connection conn = DriverManager.getConnection(db_connect_string, db_userid, db_password);
+			System.out.println("connected");
+			Statement statement = conn.createStatement();
+			String queryString = "select * from tables";
+			ResultSet rs = statement.executeQuery(queryString);
+			while (rs.next()) {
+				System.out.println(rs.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+  }
+  public static void main(String[] args)
+  {
+	  ConnectMSSQLServer connServer = new ConnectMSSQLServer();
+	  connServer.dbConnect("jdbc:sqlserver://XXX-ServerName-XXX\\SQLOLEDB;databaseName=XXXXX", "username", "password");
+	}
+}
+	  
+
+3. use .NET(C#) to connect to database:
+Web.config file:
+<connectionStrings>
+  <!--SQL SERVER-->
+  <add name="SQLConnStr" providerName="System.Data.SqlClient" connectionString="Data Source=XXX-ServerName-XXX; Initial Catalog=XXX-databaseName-XXX; User Id=XXXXXX; Password=XXXXXX"/>
+  <!--ACCESS-->
+  <add name="AccessConnStr" providerName="System.Data.OleDb" connectionString="Provider=Microsoft.ACE.OLEDB.12.0; Data Source=XXX-location-of-Access-database-XXX"/>
+</connectionStrings>
+
