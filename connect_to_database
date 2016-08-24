@@ -85,3 +85,28 @@ sqlString = "SELECT * FROM TABLES";
 rs.Open(sqlString, connection);	
 rs.close;
 connection.close;
+
+
+5. use PHP to connect database:
+
+$server = "XXX-ServerName-XXX";
+$options = array(  "UID" => "XXXXX",  "PWD" => "XXXXX",  "Database" => "XXXXX");
+$conn = sqlsrv_connect($server, $options);
+if ($conn === false) 
+	die("<pre>".print_r(sqlsrv_errors(), true));
+$query = sqlsrv_query($conn, $sql);
+if ($query === false){  
+	exit("<pre>".print_r(sqlsrv_errors(), true)
+}
+while ($row = sqlsrv_fetch_array($query)){  
+	$array = array();
+	for($i=0; $i<=sizeof($row); $i++){
+		array_push($array, $row[$i]);
+	}
+	fputcsv($output, $array);
+	unset($array);
+}
+
+fclose($output);
+sqlsrv_free_stmt($query);
+sqlsrv_close($conn);
