@@ -60,3 +60,36 @@ function HTTPrequest($url)
 ?>
 	 
 	 
+3. use VBA to handle HTTP request/response
+
+Sub DownloadFile()
+    Dim http As WinHttp.WinHttpRequest
+    Dim UrlToPostTo As String, UrlRedirectedTo As String
+    UrlToPostTo = "XXXXXXXXXXXXXXXXXXXX"
+    Set http = New WinHttp.WinHttpRequest
+    http.Open "GET", UrlToPostTo, False
+    http.Option(WinHttpRequestOption_EnableRedirects) = False
+    http.SetRequestHeader "Accept", "text/html, application/xhtml+xml, application/xml;q=0.9,image/webp,*/*;q=0.8"
+    http.SetRequestHeader "Accept-Language", "en-US,en;q=0.8"
+    http.SetRequestHeader "User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36"
+    http.SetRequestHeader "Content-Type", "application/pdf"
+    http.SetRequestHeader "Host", "www.XXXXXXX.com"
+    http.SetRequestHeader "Connection", "Keep-Alive"
+    http.SetRequestHeader "Cookie", "XXXXXXXXXXXXXXXXX"
+    http.Send
+    If http.Status = "302" Then
+        Dim loginData As String
+        UrlRedirectedTo = http.GetResponseHeader("location")
+        loginData = "accountName=XXXXXX&password=XXXXXX"
+        http.Open "POST", UrlRedirectedTo, False
+        http.Send loginData
+    End If
+    Set ostream = CreateObject("ADODB.Stream")
+    ostream.Open
+    ostream.Type = 1
+    ostream.Write http.responseBody
+    ostream.SaveToFile "XXXXXX\XXXXXXX.pdf", 2
+    ostream.Close
+    Set http = Nothing
+    Set ostream = Nothing
+End Sub
