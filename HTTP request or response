@@ -1,0 +1,62 @@
+1.use Java to handle HTTP request/response
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+
+public class download {
+	public static void main(String[] args) throws IOException{
+		URL website = new URL("www.XXXXX.com/XXXXXXX/XXXXXXX.pdf");
+		ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+		FileOutputStream fos = new FileOutputStream("XXXXX.pdf");
+		fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+	}
+}
+
+
+2. use PHP to handle HTTP request/response
+
+<?php
+function HTTPrequest($url)
+{
+  $cSession = curl_init(); 
+  curl_setopt($cSession,CURLOPT_URL,$url);
+  curl_setopt($cSession,CURLOPT_RETURNTRANSFER,true);
+  curl_setopt($cSession,CURLOPT_HEADER, true); 
+  curl_setopt($cSession, CURLINFO_HEADER_OUT, true);
+  $headers = array(
+	  "GET /XXXXXXXXXX/XXXXXXXXX.html HTTP/1.1",
+	  "Accept:	text/html, application/xhtml+xml, */*",
+	  "Accept-Language: en-CA",
+	  "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
+	  "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
+	  "Host: www.XXXXXXX.com",
+	  "Connection: Keep-Alive",
+	  "Cache-Control: no-cache",
+	  "Cookie: XXXXXXXXXXXXXXXXXX" );
+	curl_setopt($cSession, CURLOPT_HTTPHEADER, $headers);
+	curl_setopt($cSession, CURLOPT_SSL_VERIFYPEER, false);
+  $result=curl_exec($cSession);
+  if(empty($result)){
+	  echo "some error happened";
+	  echo '<br>';
+	  die(curl_error($cSession));
+  }
+  else{
+  	$response_header_size = curl_getinfo($cSession, CURLINFO_HEADER_SIZE);
+  	$response_header = substr($result, 0, $response_header_size);
+  	$response_body = substr($result, $response_header_size);
+  	echo $response_body;
+  	echo '<br>';
+  	$file = fopen('XXXXXXX.pdf', 'w');
+	  fwrite($file, $response_body);
+	  fclose($file);
+  }
+  curl_close($cSession);
+  return $result;
+}
+?>
+	 
+	 
