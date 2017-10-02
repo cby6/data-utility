@@ -19,3 +19,5 @@ unzip -o "$flat_file" -d /home/etl_staging/${dbase}/file_management/
 unrar e -p$password -o- "$flat_file" /home/etl_staging/${dbase}/file_management/
 
 gunzip /home/etl_staging/${dbase}/file_management/"$flat_file"
+
+cat script.py | ssh produser@10.11.12.176 python -
