@@ -1,0 +1,61 @@
+﻿HIVE||PYSPARK (RDD)||PYSPARK (DATAFRAME)
+df1 left join df2 on column||||df1.join(df2, df1.column1==df2.column2, 'left')
+df1 right join df2 on column1 and column2||||df1.join(df2, df1.column1==df2.column2, 'right')
+df1 join df2 on column1=column2||||df1.join(df2, df1.column1==df2.column2)
+df1 outer join df2 on column1=column2||||df1.join(df2, df1.column1==df2.column2, 'outer')
+select max(column_name)||"df.select(""column_name"").rdd.max()[0]"||df.groupBy().max(column).show()
+select min(column_name)||"df.select(""column_name"").rdd.min()[0]"||df.groupBy().min(column).show()
+select distinct column_name||df.select('column_name').distinct().rdd.map(lambda r: r[0]).collect()||df.select('column_name').distinct().show()
+select distinct column1, column2||||
+column_name between X and Y||||
+column_name = X||||
+column1=X and column2=Y||||
+column_name in (X,Y)||||
+order by column_name1, column_name2||||
+order by column_name||||df.orderBy(df.column.desc())
+limit X||||
+count(*)||||df.count()
+select column1, column2||||
+sum(column1) group by column2||||df.groupBy(colum).agg()
+max(column1) group by column2||||
+sum(column1) group by column2, column3||||
+count(*) group by column||||
+list all column headers||||
+where column is null||||
+where keyword in any column||"rdd.filter(lambda line: ""keyword"" in line)"||
+select max(len(column))||rdd.map(lambda line: len(line.split())).reduce(lambda a, b: a if (a>b) else b)||
+select count(explode(split(column)))||rdd.flatMap(lambda line: line.split()).map(lambda word: (word,1)).reduceByKey(lambda a, b: a+b)||
+desc table||||df.printSchema(); df.columns
+limit 5||||df.show(5)
+count, mean, stddev, min, max||||df.describe('column_name').show()
+select column1, column2 limit 5||||df.select('column1','column2').show(5)
+||||diff=pa.filter(pa.transaction_date=='20170713').select('basket_id').subtract(df.filter(df.transaction_date=='20170713').select('basket_id'))
+select column1 as column2||||(from pyspark.sql.functions import *) df.select(col(column1).alias(column2))
+df1 join df2 on column1=column2 and column3=column4||||df1.join(df2, (pp.promo_week_key<=td.promo_week_key) & (pp.pwk>=td.promo_week_key), 'inner')
+cast(column as int)||||df.select(df.column.cast('int').alias(column_name))
+where column1=X and column2=Y||||df.filter((df.column1==X) & (df.column2==Y))
+pair wise frequency of column1 and column2||||df.crosstab(column1, column2).show()
+select * where any column is null||||df.dropna(how='any')
+select mean(column1) group by column2||||df.groupBy(column2).agg({'column1':'mean'}).show()
+drop column||||df.drop(column)
+where column like '%word%'||||df.filter(df.column.like('%word%'))
+||||
+||||
+||||
+||||
+(1) load hive table to dataframe||||
+from pyspark.sql import HiveContext||||
+hive_context = HiveContext(sc)||||
+"df = hive_context.table(""table_name"")"||||
+||||
+(2) start pyspark interface||||
+pyspark --num-executors 5 --driver-memory 64g --executor-memory 64g||||
+||||
+(3) export dataframe to csv||||
+df.toPandas().to_csv('file/path.csv', index=False)||||
+||||
+(4) load csv to dataframe||||
+"rdd = sc.textFile(""path.csv"").map(lambda l: l.split("",""))"||||
+df = rdd.toDF([column_name])||||
+||||
+"df=sqlContext.load(source=""com.databricks.spark.csv"", path=""hdfs://masternode/file/path.csv"")"||||
