@@ -1,0 +1,26 @@
+HIVE||PYTHON
+df1 left join df2 on column||df.merge(left=df1, right=df2, how='left', on=column_name, indicator=True)
+df1 right join df2 on column1 and column2||df.merge(left=df1, right=df2, how='right', on=[column1_name,column2_name], indicator=True)
+df1 join df2 on column1=column2||df.merge(left=df1, right=df2, how='inner', left_on=column1_name, right_on=column2_name)
+df1 outer join df2 on column1=column2||df.merge(left=df1, right=df2, how='outer', left_index=column1_index, right_index=column2_index)
+select max(column_name)||df[column_name].max(axis=0)
+select min(column_name)||df[column_name].min(axis=0)
+select distinct column_name||df[column_name].unique()
+select distinct column1, column2||df.iloc[:,[column1_index,column2_index]].drop_duplicates()
+column_name between X and Y||df[df['dw_product.sku_key'].between(X,Y,inclusive=1)]
+column_name = X||df[df['dw_product.sku_key'] == 2]
+column1=X and column2=Y||df[(df[column1]==X) & (df[column2]==Y)]
+column_name in (X,Y)||df[df['dw_product.sku_key'].isin([X,Y])]
+order by column_name1, column_name2||df.sort_values(by=[column_name1, column_name2], ascending=[1,0])
+order by column_name||df.sort_values(column_name, ascending=1)
+limit X||df.head(X); df.tail(X)
+count(*)||df.shape
+select column1, column2||df.iloc[:,[column1_index,column2_index]]
+||df.iloc[:,[column1_index,column2_index]]
+sum(column1) group by column2||df.groupby(column2_name).sum().iloc[:,column1_index]
+||df.groupby(column2_name).agg([np.sum,np.mean,np.std])
+max(column1) group by column2||df.groupby(column2_name).max().iloc[:,column1_index]
+sum(column1) group by column2, column3||df.groupby([column2_name, column3_name]).sum().iloc[:,column1_index]
+count(*) group by column||df.groupby(column_name).agg('count')
+list all column headers||list(df)
+where column is null||df[df[column_name].isnull().values]
