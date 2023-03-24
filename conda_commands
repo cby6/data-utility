@@ -1,0 +1,28 @@
+- create a new environment
+conda create --name myenv
+
+- create environment with python version
+conda create -n myenv python=3.8
+
+- create env with specific package
+conda create -n myenv numpy
+
+- install environment from yaml file
+conda env create -f env.yaml
+
+- install package to environment
+conda install -n myenv numpy
+
+- delete environment
+conda remove --name myenv --all
+
+- activate/deactivate virtual environment
+conda activate myenv
+conda deactivate
+
+- list packages in environment
+conda env list
+conda info --envs
+
+- output environment to yaml file
+conda env export > env.yaml
