@@ -1,0 +1,15 @@
+**************** Make local git repo shared ***********************
+
+1. change to root account
+2. create group "git": groupadd git
+3. add users to git group: usermod -aG git <user>
+4. go to desired directory which will store local repo
+5. git clone to directory
+6. Update group and permission of git repo
+  a. chown -R root:git <local_repo_folder>
+  b. chmod -R g+rw <local_repo_folder>
+  c. cd <local_repo_folder>
+  d. find . -type d | xargs chmod g_srwX
+7. set local repo to shared
+  a. git config core.sharedRepository group
+  b. git config receive.denyNonFastForwards true
