@@ -1,0 +1,20 @@
+for f in file_*.csv; do sed '1d' $f | sed '$ d' >> ${file}.csv; done
+
+hive -e "$query" | sed 's/\t/,/g' >> ${file}.csv 
+
+sqoop export --connect jdbc:db2://ipv4:port/path --username xxxx --password xxxx --table $schema.$table -hcatalog-database $database -hcatalog-table $table
+
+ftp_records="/home/file.txt"
+source -- $ftp_records
+
+password=`echo ${password} | base64 --decode`
+
+find $1 -maxdepth 1 -type f -name "${fname}*.${ftype}" -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d/ -f2 | head -1
+
+unzip -o "$flat_file" -d /path
+
+unrar e -p$password -o- "$flat_file" /path
+
+gunzip /path/"$flat_file"
+
+cat script.py | ssh produser@ipv4 python -
