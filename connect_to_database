@@ -1,4 +1,4 @@
-1.VBA use ADO to connect to database:
+1.VBA use ADO to connect to Access:
 
 Dim Conn As ADODB.Connection
 Dim rs As ADODB.Recordset
@@ -19,7 +19,7 @@ Set Conn = Nothing
 Set rs = Nothing
 
 
-2.Java use JDBC to connect to database:
+2.Java use JDBC to connect to SQLServer:
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -50,7 +50,7 @@ public class ConnectMSSQLServer {
 }
 	  
 
-3. use .NET(C#) to connect to database:
+3. use .NET(C#) to connect to Access:
 
 Web.config file:
 <connectionStrings>
@@ -87,7 +87,7 @@ rs.close;
 connection.close;
 
 
-5. use PHP to connect database:
+5. use PHP to connect to SQLServer:
 
 $server = "XXX-ServerName-XXX";
 $options = array(  "UID" => "XXXXX",  "PWD" => "XXXXX",  "Database" => "XXXXX");
